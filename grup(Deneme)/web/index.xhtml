@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <div>
+            <div >
+                <h:form>
+
+                    <h:dataTable class="table table-striped table-hover" value="#{grupController.tlist}" var="takım">
+                        <h:column>
+                            <f:facet name="header"> ID </f:facet>
+                                #{takım.id}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">TAKIM-ADI</f:facet>
+                            <h:commandLink action="#{grupController.updateForm(takım)}" value="#{takım.takımAdı}"/>   
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">SİL</f:facet>
+                            <h:commandButton action="#{grupController.delete(takım)}" value="Sil" />
+
+                        </h:column>
+
+                    </h:dataTable>
+                </h:form>
+            </div>
+            <div>
+                <h:form>
+                    <div class="form-group">
+                        <h:inputHidden value="#{grupController.takım1.takımAdı}"/>
+                        Takım-Adı :<h:inputText value="#{grupController.takım1.takımAdı}"/>
+
+                    </div>
+                    <div class="form-group">
+
+                        <h:commandButton value="Güncelle" action="#{grupController.update()}"/>
+                        <h:commandButton value="Ekle" action="#{grupController.ekle()}"/>
+                        <h:commandButton value="Kura Çek" action="#{grupController.eşleştirme()}"/>
+                    </div>
+                </h:form>
+            </div>
+            <div>
+                <h:dataTable class="table table-striped table-hover" value="#{grupController.glist}" var="tak">
+                    
+                    <h:column>
+                        <f:facet name="header"></f:facet>
+                            #{tak.takımAdı}
+                    </h:column>
+                </h:dataTable>
+            </div>
+
+        </div>
+
+    </h:body>
+</html>
