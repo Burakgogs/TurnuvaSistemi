@@ -1,0 +1,20 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 04.Haz.2020, 14:00:12
+    Author     : burak
+*/
+tablet01 tr:nth-child(even) {
+  background-color: #eee;
+}
+tablet01 tr:nth-child(odd) {
+  background-color: #fff;
+}
+tablet01 th {
+  color: white;
+  background-color: black;
+}
+

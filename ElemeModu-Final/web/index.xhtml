@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>www.Turnuvasistemi.com</title>
+      
+    </h:head>
+    <h:body>
+       <a href="http://localhost:8080/Anasayfa/"><font face="tahoma" size="2" color="#0f7efc"><b>ANASAYFA</b></font></a>
+
+
+        <style>
+            html { 
+                background: url(arkplan2eleme.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+        </style>
+        <!-- Filter kullanımı yapılmıştır-->
+        <div id="myBtnContainer">
+            <button class="btn" onclick="filterSelection('eslestirme')"> Eşleştirme nasıl oluşur? </button>
+            <button class="btn" onclick="filterSelection('kura')"> Kura nasıl çekilir?</button>
+            <button class="btn" onclick="filterSelection('takim')">Takım bilgileri nasıl düzenlenir?</button>
+
+        </div>
+
+        <div class="container" width="70px"  height="50px">
+            <div class="filterDiv kura">Ekrandaki Takım adı kutucuğuna takım adını giriniz ve daha sonra ekle butonuna tıklayınız.</div>
+            <div class="filterDiv eslestirme">Ev sahibi ve Deplasman takımını belirler ve eşleştirme sonrasında maç fikstürü oluşturulur.</div>
+            <div class="filterDiv takim">Takım bilgileri tablosunda sil butonu ile eklenmiş olan takımı silebilir veya takım isminin üzerine tıklayıp tekrar takım adı kutucuğundan güncellenebilir. </div>
+        </div>
+        <div>
+             <!-- takımların veritabanından bilgileri çekilip arayüzde gösterilmesini sağlayan kodlar-->
+            <div >
+                <h:form id="takımtablo">
+                    <table width="10%" height="200" border="1" cellpadding="0" cellspacing="0" style="float: inside" bgcolor="#19e399"  >
+                        <tr>
+                            <td>
+                                <h:dataTable class="table table-striped table-hover" value="#{elemeController.tlist}" var="takım"   id="tablet01" >
+                                    <h:column>
+                                        <f:facet name="header"> <p><font face="tahoma" size="2" color="#0f7efc"><b>ID</b></font></p> </f:facet>
+                                                    #{takım.id}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header"><p><font face="tahoma" size="2" color="#0f7efc"><b>TAKIM ADI</b></font></p></f:facet>
+                                        <h:commandLink action="#{elemeController.updateForm(takım)}" value="#{takım.takımAdı}">   
+                                            <f:ajax execute="@this" render="takımform"/>
+                                        </h:commandLink>
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header"><p><font face="tahoma" size="2" color="#0f7efc"><b>SİL</b></font></p></f:facet>
+                                        <h:commandButton   value="Sil" action="#{elemeController.deleteConfirm(takım)}" />
+
+
+                                    </h:column>
+
+                                </h:dataTable>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+            </div>
+              <!-- Takım adı girişi için kullanılan validatör ve takım adı girişinin yapıldığı yer-->
+            <div>
+                <h:form id="takımform">
+                    <div class="form-group">
+                        <h:inputHidden value="#{elemeController.takım1.takımAdı}"/>
+                        <p id="demo" ><font face="tahoma" size="2" color="white"><b>Takım Adı:</b></font> <h:inputText id="numb" value="#{elemeController.takım1.takımAdı}"/></p>
+                    </div>
+                
+              
+    <script>
+    function validator() {
+        var x, text;
+  
+         x = document.getElementById("numb").value;
+ 
+         if (isNaN(x) || x &lt; 3 || x &gt; 10) {
+         text = "3 harf ile 9 harf arası giriniz";
+         } else {
+              text = "onaylandı";
+            }
+         document.getElementById("demo").innerHTML = text;
+}
+    </script>
+                    <!-- Ajax işleminin gerçekleştiği butonlar -->
+                    <div class="form-group" >
+
+                        <h:commandButton   value="Güncelle"  onclick="validator()" action="#{elemeController.update()}">
+                            <f:ajax execute="takımform" render="takımform takımtablo"/>
+                        </h:commandButton>
+                        <!-- kura çekimini gerçekleştirip veri tabanına ekleyen buton -->
+                        <h:commandButton value="Ekle" onclick="validator()" action="#{elemeController.ekle()}">
+                            <f:ajax execute="takımform" render="takımform takımtablo"/>
+                        </h:commandButton>
+                        <!-- veritabanındaki verilerin tablolara işlenmesi için gerekli yenileme işlemi-->
+                        <h:commandButton value="Kura Çek"  onclick="http://localhost:8080/Eleme_Deneme_/" > 
+                        </h:commandButton>
+
+                    </div>
+                </h:form>
+            </div>
+
+        <!-- tekil liste olarak şampiyon belirlenmesi-->
+            <table width="20%" height="200" border="1" cellpadding="0" cellspacing="0" style=" float: inside" bgcolor="19e399"  >
+                <tr>
+                    <td>
+                        <h:dataTable value="#{elemeController.tekillist}" var="takım" id="listeler" >
+                            <h:column>
+                                <p><font face="tahoma" size="2" color="	#EEEEEE"><b>ŞAMPİYON</b></font></p>
+                                        #{takım.takımAdı} 
+                            </h:column>
+                        </h:dataTable>
+                    </td>
+                    <!-- Eşleştirme sonucunun bağlantı kodları-->
+                    <td>
+                        <h:dataTable class="table table-striped table-hover" value="#{turController.turlist}" var="takım" width="20%" >
+                            <h:column>
+                                <f:facet name="header" ><p><font   face="tahoma" size="2" color="#EEEEEE"><b>EVSAHİBİ</b></font></p></f:facet>
+
+                                #{takım.takımAdı}
+
+                            </h:column> 
+                        </h:dataTable>
+                    </td>
+
+                    <td>
+                        <h:dataTable class="table table-striped table-hover" value="#{turController.turlist2}" var="takım" width="20%">
+                            <h:column>
+                                <f:facet name="header" ><p><font face="tahoma" size="2" color="#EEEEEE"><b>DEPLASMAN</b></font></p></f:facet>
+                                            #{takım.takımAdı}
+                            </h:column> 
+                        </h:dataTable>
+                    </td>
+                </tr>
+            </table>
+            <style>
+
+                tablodeneme {
+                    border-collapse: collapse;
+                    width: 20%;
+                    
+                }
+
+                tr, td {
+
+                    text-align: left;
+                    padding: 8px;
+                    
+                }
+
+                tr:nth-child(even) {background-color: #0ae0f7;}
+
+            </style>
+<!-- MANY TO MANY VE ONE TO MANY -->
+            <table width="20%" height="200" border="1" cellpadding="0" cellspacing="0" style=" float: inside" bgcolor="66ffff"  >
+                <tr><td>
+                        <!-- Maç fikstürünün yazıldığı tablo -->
+                        <h:dataTable class="table table-striped table-hover" value="#{elemesonucController.eslesme3list}" var="sonuctakım" bgcolor="#66ffff">
+                            <h:column>
+                                <f:facet name="header"><p><font face="tahoma" size="2" color="#0033ff"><b>Maç Fikstürleri</b></font></p></f:facet>
+                                
+                                <ui:repeat value="#{sonuctakım.kazananlar}" var="sonuctakım"> </ui:repeat> 
+
+                                #{sonuctakım.takımAdı2}
+
+                            </h:column> 
+                        </h:dataTable>
+                    </td>
+                    <td>
+                        <h:dataTable class="table table-striped table-hover" value="#{turController.firstturlist}" var="takım" bgcolor="#66ffff">
+
+                            <f:facet name="header"><p><font face="tahoma" size="2" color="black"><b> KAZANANLAR</b></font></p></f:facet>
+                                        #{takım.takımAdı}
+                        </h:dataTable>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+<!-- görsel için gerekli kodlar-->
+        <style>
+            .container {
+                overflow: hidden;
+                background-color: #b6fabd;
+                
+            }
+
+            .filterDiv {
+
+
+                color: black;
+                width: 200px;
+                line-height: 50px;
+                text-align: center;
+                margin: 2px;
+                display: none;
+            }
+
+
+            .show {
+                display: inline;
+            }
+
+            .btn {
+                border: none;
+                outline: none;
+                padding: 12px 16px;
+                background-color: #f1f1f1;
+                cursor: pointer;
+            }
+
+
+            .btn:hover {
+                background-color: #ddd;
+            }
+
+
+            .btn.active {
+                background-color: #666;
+                color: white;
+            }
+        </style>
+        <!-- Filter için script kodları-->
+        <script>
+            
+                    function filterSelection(c) {
+                    var x, i;
+                    x = document.getElementsByClassName("filterDiv");
+                    
+                    for (i = 0; i &lt; x.length; i++) {
+                    w3RemoveClass(x[i], "show");
+                    if (x[i].className.indexOf(c) &gt; - 1) w3AddClass(x[i], "show");
+                    }
+                    }
+            function w3AddClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i &lt; arr2.length; i++) {
+            if (arr1.indexOf(arr2[i]) == - 1) {
+            element.className += " " + arr2[i];
+            }
+            }
+            }
+            function w3RemoveClass(element, name) {
+            var i, arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i &lt; arr2.length; i++) {
+            while (arr1.indexOf(arr2[i]) &gt; - 1) {
+            arr1.splice(arr1.indexOf(arr2[i]), 1);
+            }
+            }
+            element.className = arr1.join(" ");
+            }
+            var btnContainer = document.getElementById("myBtnContainer");
+            var btns = btnContainer.getElementsByClassName("btn");
+            for (var i = 0; i&lt; btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+            });
+            }</script>
+
+    </h:body>
+</html>
